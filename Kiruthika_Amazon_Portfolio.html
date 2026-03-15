@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kiruthika Venkatesan | Principal PM-Tech</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0a0a0a;
+  --paper: #f2ede6;
+  --amber: #d4891a;
+  --amber-light: #f0a830;
+  --amber-pale: rgba(212,137,26,0.12);
+  --warm-white: #faf7f2;
+  --muted: #6b6056;
+  --border: rgba(212,137,26,0.2);
+  --dark-panel: #111008;
+  --mid-panel: #1a1710;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--ink);
+  color: var(--paper);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* Custom cursor */
+.cursor {
+  position: fixed; width:10px; height:10px;
+  background: var(--amber); border-radius:50%;
+  pointer-events:none; z-index:9999;
+  transform: translate(-50%,-50%);
+  transition: transform 0.1s, width 0.2s, height 0.2s;
+  mix-blend-mode: screen;
+}
+.cursor-ring {
+  position:fixed; width:32px; height:32px;
+  border:1px solid rgba(212,137,26,0.5); border-radius:50%;
+  pointer-events:none; z-index:9998;
+  transform: translate(-50%,-50%);
+  transition: transform 0.15s ease, width 0.3s, height 0.3s, border-color 0.3s;
+}
+body:hover .cursor { opacity:1; }
+
+/* Nav */
+nav {
+  position:fixed; top:0; width:100%; z-index:100;
+  padding:0 52px;
+  display:flex; align-items:center; justify-content:space-between;
+  height:64px;
+  background: rgba(10,10,10,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-wordmark {
+  font-family:'Cormorant Garamond', serif;
+  font-size:1.1rem; font-weight:600; color:var(--amber);
+  letter-spacing:0.06em;
+}
+.nav-links { display:flex; gap:32px; list-style:none; }
+.nav-links a {
+  color:rgba(242,237,230,0.55); text-decoration:none;
+  font-size:0.75rem; font-weight:500; letter-spacing:0.12em; text-transform:uppercase;
+  transition:color 0.2s;
+}
+.nav-links a:hover { color:var(--amber); }
+.nav-status {
+  display:flex; align-items:center; gap:8px;
+  font-size:0.72rem; color:var(--muted); letter-spacing:0.08em;
+}
+.status-dot {
+  width:6px; height:6px; border-radius:50%; background:#4caf50;
+  animation:pulse 2s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+/* Hero */
+.hero {
+  min-height:100vh; position:relative; overflow:hidden;
+  display:flex; align-items:center;
+  padding:120px 52px 80px;
+}
+.hero-grid-bg {
+  position:absolute; inset:0;
+  background-image:
+    linear-gradient(rgba(212,137,26,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212,137,26,0.04) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+.hero-glow {
+  position:absolute; right:-200px; top:50%; transform:translateY(-50%);
+  width:700px; height:700px; border-radius:50%;
+  background:radial-gradient(circle, rgba(212,137,26,0.07) 0%, transparent 65%);
+  pointer-events:none;
+}
+.hero-glow-2 {
+  position:absolute; left:-100px; bottom:-100px;
+  width:500px; height:500px; border-radius:50%;
+  background:radial-gradient(circle, rgba(212,137,26,0.04) 0%, transparent 65%);
+}
+.hero-content { position:relative; z-index:2; max-width:860px; }
+.hero-eyebrow {
+  display:inline-flex; align-items:center; gap:12px;
+  margin-bottom:28px;
+  opacity:0; animation:slideUp 0.7s 0.1s ease both;
+}
+.eyebrow-line { width:40px; height:1px; background:var(--amber); }
+.eyebrow-text {
+  font-family:'DM Mono', monospace; font-size:0.7rem;
+  color:var(--amber); letter-spacing:0.2em; text-transform:uppercase;
+}
+.hero h1 {
+  font-family:'Cormorant Garamond', serif;
+  font-size:clamp(3.2rem,6vw,5.8rem); font-weight:300;
+  line-height:1.05; letter-spacing:-0.02em;
+  color:var(--paper);
+  opacity:0; animation:slideUp 0.8s 0.2s ease both;
+}
+.hero h1 em { color:var(--amber); font-style:italic; font-weight:300; }
+.hero-sub {
+  margin-top:28px; max-width:520px;
+  font-size:0.95rem; line-height:1.8; color:rgba(242,237,230,0.6);
+  font-weight:300;
+  opacity:0; animation:slideUp 0.8s 0.35s ease both;
+}
+.hero-metrics {
+  display:flex; gap:0; margin-top:52px;
+  opacity:0; animation:slideUp 0.8s 0.45s ease both;
+  border:1px solid var(--border); width:fit-content;
+}
+.metric {
+  padding:20px 36px; border-right:1px solid var(--border);
+  display:flex; flex-direction:column; gap:5px;
+}
+.metric:last-child { border-right:none; }
+.metric-num {
+  font-family:'Cormorant Garamond', serif;
+  font-size:2.2rem; font-weight:600; color:var(--amber);
+  line-height:1;
+}
+.metric-label {
+  font-size:0.68rem; color:var(--muted); letter-spacing:0.12em; text-transform:uppercase;
+}
+.hero-ctas {
+  display:flex; gap:14px; margin-top:40px;
+  opacity:0; animation:slideUp 0.8s 0.55s ease both;
+}
+.btn-amber {
+  background:var(--amber); color:var(--ink);
+  padding:13px 28px; font-size:0.78rem; font-weight:600;
+  letter-spacing:0.1em; text-transform:uppercase; text-decoration:none;
+  transition:background 0.2s, transform 0.15s;
+  display:inline-flex; align-items:center; gap:8px;
+}
+.btn-amber:hover { background:var(--amber-light); transform:translateY(-2px); }
+.btn-ghost {
+  border:1px solid var(--border); color:rgba(242,237,230,0.7);
+  padding:13px 28px; font-size:0.78rem; font-weight:500;
+  letter-spacing:0.1em; text-transform:uppercase; text-decoration:none;
+  transition:border-color 0.2s, color 0.2s, transform 0.15s;
+}
+.btn-ghost:hover { border-color:var(--amber); color:var(--amber); transform:translateY(-2px); }
+
+/* Sections */
+section { padding:96px 52px; }
+.sec-label {
+  display:inline-flex; align-items:center; gap:12px;
+  font-family:'DM Mono', monospace; font-size:0.68rem;
+  color:var(--amber); letter-spacing:0.18em; text-transform:uppercase;
+  margin-bottom:14px;
+}
+.sec-label::before { content:''; display:block; width:32px; height:1px; background:var(--amber); }
+.sec-title {
+  font-family:'Cormorant Garamond', serif;
+  font-size:clamp(2rem,3.5vw,3rem); font-weight:300;
+  line-height:1.2; color:var(--paper); margin-bottom:56px;
+}
+.sec-title em { color:var(--amber); font-style:italic; }
+
+/* About */
+#about { background:var(--dark-panel); }
+.about-layout { display:grid; grid-template-columns:1fr 1fr; gap:72px; align-items:start; }
+.about-body p {
+  font-size:0.92rem; line-height:1.9; color:rgba(242,237,230,0.65);
+  margin-bottom:18px; font-weight:300;
+}
+.about-body p strong { color:var(--paper); font-weight:500; }
+.expertise-list { margin-top:36px; display:flex; flex-direction:column; gap:0; }
+.exp-item {
+  display:flex; gap:20px; align-items:flex-start;
+  padding:18px 0; border-bottom:1px solid rgba(212,137,26,0.1);
+  transition:background 0.2s;
+}
+.exp-item:first-child { border-top:1px solid rgba(212,137,26,0.1); }
+.exp-num {
+  font-family:'DM Mono', monospace; font-size:0.65rem;
+  color:var(--amber); letter-spacing:0.1em; margin-top:3px; flex-shrink:0;
+}
+.exp-content h4 { font-size:0.88rem; font-weight:600; color:var(--paper); margin-bottom:4px; }
+.exp-content p { font-size:0.8rem; color:rgba(242,237,230,0.5); line-height:1.6; }
+
+.about-panel {
+  background:rgba(212,137,26,0.05); border:1px solid var(--border);
+  padding:32px;
+}
+.panel-title {
+  font-family:'Cormorant Garamond', serif;
+  font-size:1.1rem; color:var(--amber); margin-bottom:24px;
+  padding-bottom:16px; border-bottom:1px solid var(--border);
+}
+.info-rows { display:flex; flex-direction:column; gap:0; }
+.info-row {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:12px 0; border-bottom:1px solid rgba(212,137,26,0.08);
+  font-size:0.82rem;
+}
+.info-row:last-child { border-bottom:none; }
+.info-key { color:var(--muted); }
+.info-val { color:var(--paper); font-weight:500; text-align:right; max-width:200px; }
+.pillars { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:24px; }
+.pillar {
+  background:rgba(212,137,26,0.07); border:1px solid rgba(212,137,26,0.15);
+  padding:14px 16px;
+}
+.pillar-label { font-size:0.68rem; color:var(--amber); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:4px; }
+.pillar-value { font-size:0.8rem; color:rgba(242,237,230,0.7); line-height:1.5; }
+
+/* Projects */
+#projects { background:var(--ink); }
+.projects-stack { display:flex; flex-direction:column; gap:2px; }
+.proj-card {
+  background:var(--mid-panel); border:1px solid rgba(212,137,26,0.1);
+  display:grid; grid-template-columns:320px 1fr;
+  overflow:hidden;
+  transition:border-color 0.3s, transform 0.3s;
+}
+.proj-card:hover { border-color:rgba(212,137,26,0.4); transform:translateX(4px); }
+.proj-left {
+  background:rgba(212,137,26,0.04); padding:40px 32px;
+  display:flex; flex-direction:column; justify-content:space-between;
+  border-right:1px solid rgba(212,137,26,0.1);
+}
+.proj-index {
+  font-family:'DM Mono', monospace; font-size:0.62rem;
+  color:rgba(212,137,26,0.45); letter-spacing:0.15em;
+  margin-bottom:12px;
+}
+.proj-left h3 {
+  font-family:'Cormorant Garamond', serif;
+  font-size:1.35rem; font-weight:400; color:var(--paper);
+  line-height:1.35; margin-bottom:16px;
+}
+.proj-meta { font-size:0.75rem; color:var(--muted); line-height:1.7; }
+.proj-meta span { display:block; }
+.proj-tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:24px; }
+.proj-tag {
+  font-family:'DM Mono', monospace; font-size:0.62rem;
+  color:rgba(212,137,26,0.7); background:rgba(212,137,26,0.08);
+  border:1px solid rgba(212,137,26,0.15);
+  padding:4px 10px; letter-spacing:0.06em;
+}
+.proj-right { padding:40px; }
+.proj-right p {
+  font-size:0.88rem; line-height:1.85; color:rgba(242,237,230,0.6);
+  margin-bottom:24px; font-weight:300;
+}
+.proj-achievements { display:flex; flex-direction:column; gap:10px; }
+.achievement {
+  display:flex; gap:14px; align-items:flex-start;
+  font-size:0.84rem; color:rgba(242,237,230,0.6); line-height:1.65;
+}
+.achievement::before {
+  content:''; width:5px; height:5px; border-radius:50%;
+  background:var(--amber); flex-shrink:0; margin-top:7px;
+}
+.achievement strong { color:var(--paper); font-weight:500; }
+.proj-kpis {
+  margin-top:28px; padding-top:28px;
+  border-top:1px solid rgba(212,137,26,0.1);
+  display:flex; gap:28px;
+}
+.kpi { text-align:center; }
+.kpi-num {
+  font-family:'Cormorant Garamond', serif;
+  font-size:1.8rem; font-weight:600; color:var(--amber); display:block;
+}
+.kpi-label { font-size:0.65rem; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase; }
+
+/* Skills */
+#skills { background:var(--dark-panel); }
+.skills-grid { display:grid; grid-template-columns:1fr 1fr; gap:48px; }
+.skill-group { margin-bottom:32px; }
+.skill-group-label {
+  font-family:'DM Mono', monospace; font-size:0.65rem;
+  color:var(--amber); letter-spacing:0.16em; text-transform:uppercase;
+  margin-bottom:16px; padding-bottom:10px;
+  border-bottom:1px solid rgba(212,137,26,0.15);
+}
+.skill-chips { display:flex; flex-wrap:wrap; gap:7px; }
+.chip {
+  font-size:0.77rem; color:rgba(242,237,230,0.7);
+  background:rgba(242,237,230,0.05); border:1px solid rgba(242,237,230,0.1);
+  padding:6px 14px; transition:all 0.2s; cursor:default;
+}
+.chip:hover { background:rgba(212,137,26,0.1); border-color:var(--amber); color:var(--paper); }
+.chip.core { background:rgba(212,137,26,0.1); border-color:rgba(212,137,26,0.3); color:var(--amber-light); }
+
+.competency-bars { margin-top:8px; }
+.comp-item { margin-bottom:18px; }
+.comp-header { display:flex; justify-content:space-between; margin-bottom:7px; }
+.comp-name { font-size:0.82rem; color:var(--paper); font-weight:400; }
+.comp-score { font-family:'DM Mono', monospace; font-size:0.7rem; color:var(--muted); }
+.comp-track { height:2px; background:rgba(242,237,230,0.08); overflow:hidden; }
+.comp-fill {
+  height:100%; background:linear-gradient(90deg, var(--amber), var(--amber-light));
+  width:0; transition:width 1.4s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* Experience */
+#experience { background:var(--ink); }
+.timeline { position:relative; padding-left:24px; }
+.timeline::before {
+  content:''; position:absolute; left:0; top:8px; bottom:0;
+  width:1px; background:rgba(212,137,26,0.2);
+}
+.tl-item { position:relative; margin-bottom:44px; }
+.tl-dot {
+  position:absolute; left:-28px; top:6px;
+  width:10px; height:10px; border-radius:50%;
+  background:var(--amber); border:2px solid var(--ink);
+}
+.tl-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; }
+.tl-title { font-size:0.92rem; font-weight:600; color:var(--paper); }
+.tl-company { font-size:0.82rem; color:rgba(242,237,230,0.5); margin-top:3px; }
+.tl-date {
+  font-family:'DM Mono', monospace; font-size:0.7rem;
+  color:var(--muted); white-space:nowrap; margin-top:3px;
+}
+.tl-bullets { display:flex; flex-direction:column; gap:7px; margin-top:12px; }
+.tl-bullet {
+  display:flex; gap:10px; font-size:0.82rem;
+  color:rgba(242,237,230,0.55); line-height:1.65;
+}
+.tl-bullet::before {
+  content:'›'; color:var(--amber); flex-shrink:0;
+  font-size:0.9rem; margin-top:-1px;
+}
+.tl-bullet strong { color:rgba(242,237,230,0.85); font-weight:500; }
+
+/* Certs & Education */
+#certs { background:var(--dark-panel); }
+.certs-edu-layout { display:grid; grid-template-columns:1fr 1fr; gap:52px; }
+.cert-grid { display:flex; flex-direction:column; gap:10px; }
+.cert-row {
+  display:flex; align-items:center; gap:16px;
+  padding:16px 20px; background:rgba(242,237,230,0.03);
+  border:1px solid rgba(212,137,26,0.1);
+  transition:border-color 0.2s, background 0.2s;
+}
+.cert-row:hover { border-color:rgba(212,137,26,0.35); background:rgba(212,137,26,0.05); }
+.cert-icon {
+  width:38px; height:38px; background:rgba(212,137,26,0.1);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1rem; flex-shrink:0;
+}
+.cert-info h4 { font-size:0.84rem; font-weight:600; color:var(--paper); margin-bottom:2px; }
+.cert-info p { font-size:0.73rem; color:var(--muted); }
+.cert-badge {
+  margin-left:auto; flex-shrink:0;
+  font-family:'DM Mono', monospace; font-size:0.6rem;
+  color:var(--amber); background:rgba(212,137,26,0.1);
+  border:1px solid rgba(212,137,26,0.25);
+  padding:4px 10px; letter-spacing:0.1em; text-transform:uppercase;
+}
+
+.edu-entries { display:flex; flex-direction:column; gap:20px; }
+.edu-entry {
+  padding:24px 28px; background:rgba(242,237,230,0.03);
+  border:1px solid rgba(212,137,26,0.1); border-left:3px solid var(--amber);
+}
+.edu-degree { font-family:'Cormorant Garamond', serif; font-size:1.05rem; color:var(--paper); margin-bottom:5px; }
+.edu-school { font-size:0.82rem; color:var(--amber-light); margin-bottom:6px; }
+.edu-dates { font-family:'DM Mono', monospace; font-size:0.7rem; color:var(--muted); }
+.edu-desc { font-size:0.78rem; color:rgba(242,237,230,0.45); margin-top:10px; line-height:1.6; }
+
+/* Contact */
+.contact-bar {
+  background:var(--amber); padding:60px 52px;
+  display:flex; justify-content:space-between; align-items:center;
+}
+.contact-bar h2 {
+  font-family:'Cormorant Garamond', serif;
+  font-size:2.2rem; font-weight:400; color:var(--ink);
+}
+.contact-bar p { font-size:0.88rem; color:rgba(10,10,10,0.6); margin-top:6px; }
+.contact-actions { display:flex; gap:12px; }
+.btn-ink {
+  background:var(--ink); color:var(--amber);
+  padding:13px 28px; font-size:0.78rem; font-weight:600;
+  letter-spacing:0.1em; text-transform:uppercase; text-decoration:none;
+  transition:background 0.2s;
+}
+.btn-ink:hover { background:#1a1a1a; }
+.btn-outline-ink {
+  border:2px solid var(--ink); color:var(--ink);
+  padding:11px 28px; font-size:0.78rem; font-weight:600;
+  letter-spacing:0.1em; text-transform:uppercase; text-decoration:none;
+  transition:background 0.2s;
+}
+.btn-outline-ink:hover { background:rgba(10,10,10,0.08); }
+
+/* Footer */
+footer {
+  background:var(--dark-panel); padding:28px 52px;
+  display:flex; justify-content:space-between; align-items:center;
+  border-top:1px solid var(--border);
+}
+footer p { font-size:0.75rem; color:var(--muted); }
+.footer-mark { font-family:'Cormorant Garamond', serif; font-size:1rem; color:var(--amber); }
+
+/* Animations */
+@keyframes slideUp {
+  from { opacity:0; transform:translateY(28px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.reveal { opacity:0; transform:translateY(24px); transition:opacity 0.65s ease, transform 0.65s ease; }
+.reveal.vis { opacity:1; transform:translateY(0); }
+.reveal-delay-1 { transition-delay:0.08s; }
+.reveal-delay-2 { transition-delay:0.16s; }
+.reveal-delay-3 { transition-delay:0.24s; }
+
+@media(max-width:900px){
+  nav { padding:0 24px; }
+  .nav-links, .nav-status { display:none; }
+  section { padding:72px 24px; }
+  .hero { padding:100px 24px 60px; }
+  .about-layout, .skills-grid, .certs-edu-layout { grid-template-columns:1fr; gap:40px; }
+  .proj-card { grid-template-columns:1fr; }
+  .proj-left { border-right:none; border-bottom:1px solid rgba(212,137,26,0.1); }
+  .contact-bar { flex-direction:column; gap:28px; text-align:center; padding:48px 24px; }
+  .hero-metrics { flex-direction:column; }
+  .metric { border-right:none; border-bottom:1px solid var(--border); }
+  .metric:last-child { border-bottom:none; }
+  footer { flex-direction:column; gap:10px; padding:24px; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-wordmark">Kiruthika Venkatesan</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#certs">Education</a></li>
+  </ul>
+  <div class="nav-status"><div class="status-dot"></div>Open to Opportunities</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow-2"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <div class="eyebrow-line"></div>
+      <span class="eyebrow-text">Principal Product Manager – Tech · Seattle, WA</span>
+    </div>
+    <h1>Building the <em>Agentic</em><br>Future of Advertising</h1>
+    <p class="hero-sub">I define product vision and architecture for AI-powered advertiser experiences — from conversational frameworks to autonomous campaign agents — at the intersection of LLMs, AdTech, and platform thinking.</p>
+    <div class="hero-metrics">
+      <div class="metric">
+        <span class="metric-num">5+</span>
+        <span class="metric-label">Years in AdTech PM</span>
+      </div>
+      <div class="metric">
+        <span class="metric-num">40%</span>
+        <span class="metric-label">Delivery Acceleration</span>
+      </div>
+      <div class="metric">
+        <span class="metric-num">3×</span>
+        <span class="metric-label">Teams Enabled</span>
+      </div>
+      <div class="metric">
+        <span class="metric-num">VP+</span>
+        <span class="metric-label">Stakeholder Alignment</span>
+      </div>
+    </div>
+    <div class="hero-ctas">
+      <a href="#projects" class="btn-amber">View Projects →</a>
+      <a href="#about" class="btn-ghost">About Me</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="sec-label">Who I Am</div>
+  <h2 class="sec-title">Product Leader at the<br><em>AI × AdTech</em> Frontier</h2>
+  <div class="about-layout">
+    <div class="about-body reveal">
+      <p>I'm a <strong>Principal Product Manager – Tech</strong> with 5+ years building at the intersection of artificial intelligence, advertising technology, and platform engineering. I specialize in defining agentic experience frameworks — the intelligent layer that connects LLMs, first-party signals, and advertiser intent into seamless, trustworthy product experiences.</p>
+      <p>My approach is deeply systems-oriented. I think in <strong>frameworks and foundations</strong> — building opinionated platforms that enable other teams to move fast while maintaining experience cohesion. I've led end-to-end product delivery across <strong>Display, Video, and Audio advertising</strong>, owned VP/SVP-level executive communication through PR/FAQs and OP1/OP2 narratives, and partnered with science teams to translate advertiser needs into model capabilities.</p>
+      <p>I believe the future of advertising isn't clicks and dashboards — it's <strong>autonomous agents that reason, plan, and act</strong> on behalf of advertisers. I'm here to build that future.</p>
+      <div class="expertise-list">
+        <div class="exp-item">
+          <div class="exp-num">01</div>
+          <div class="exp-content">
+            <h4>Agentic Experience Architecture</h4>
+            <p>Multi-turn dialogue, trust frameworks, progressive autonomy, permission workflows</p>
+          </div>
+        </div>
+        <div class="exp-item">
+          <div class="exp-num">02</div>
+          <div class="exp-content">
+            <h4>Platform & Framework Thinking</h4>
+            <p>Integration contracts, API governance, adoption patterns, cross-team enablement</p>
+          </div>
+        </div>
+        <div class="exp-item">
+          <div class="exp-num">03</div>
+          <div class="exp-content">
+            <h4>Science × Product Partnership</h4>
+            <p>LLM evaluation criteria, VoC integration, model investment prioritization</p>
+          </div>
+        </div>
+        <div class="exp-item">
+          <div class="exp-num">04</div>
+          <div class="exp-content">
+            <h4>Executive Communication</h4>
+            <p>PR/FAQ authorship, OP1/OP2 planning, VP/SVP stakeholder alignment</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal reveal-delay-1">
+      <div class="about-panel">
+        <div class="panel-title">Contact & Profile</div>
+        <div class="info-rows">
+          <div class="info-row"><span class="info-key">Email</span><span class="info-val">kiruthikavenkat2704@gmail.com</span></div>
+          <div class="info-row"><span class="info-key">Phone</span><span class="info-val">720-813-5590</span></div>
+          <div class="info-row"><span class="info-key">Location</span><span class="info-val">Seattle, WA</span></div>
+          <div class="info-row"><span class="info-key">Availability</span><span class="info-val">Open to Offers</span></div>
+          <div class="info-row"><span class="info-key">Work Style</span><span class="info-val">Hybrid / On-site</span></div>
+          <div class="info-row"><span class="info-key">Target Role</span><span class="info-val">Principal PM-Tech</span></div>
+        </div>
+      </div>
+      <div class="about-panel" style="margin-top:16px;">
+        <div class="panel-title">Domain Expertise</div>
+        <div class="pillars">
+          <div class="pillar"><div class="pillar-label">AdTech</div><div class="pillar-value">Display · Video · Audio</div></div>
+          <div class="pillar"><div class="pillar-label">AI/LLM</div><div class="pillar-value">Agentic Frameworks</div></div>
+          <div class="pillar"><div class="pillar-label">Platform</div><div class="pillar-value">Integration Contracts</div></div>
+          <div class="pillar"><div class="pillar-label">Strategy</div><div class="pillar-value">PR/FAQ · OP1/OP2</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="sec-label">Featured Work</div>
+  <h2 class="sec-title">Projects That<br><em>Moved the Needle</em></h2>
+  <div class="projects-stack">
+
+    <div class="proj-card reveal">
+      <div class="proj-left">
+        <div>
+          <div class="proj-index">PROJECT 01</div>
+          <h3>Agentic Advertiser Experience Framework</h3>
+          <div class="proj-meta">
+            <span>⏱ 18 Months</span>
+            <span>👤 Principal PM-Tech</span>
+            <span>🏢 AdTech / AI Platform</span>
+          </div>
+        </div>
+        <div class="proj-tags">
+          <span class="proj-tag">Journey Orchestration</span>
+          <span class="proj-tag">LLM Product</span>
+          <span class="proj-tag">Multi-turn Dialogue</span>
+          <span class="proj-tag">Trust Framework</span>
+          <span class="proj-tag">PR/FAQ</span>
+        </div>
+      </div>
+      <div class="proj-right">
+        <p>Owned end-to-end product vision for an LLM-powered agentic experience framework — the foundational layer connecting conversational interfaces, autonomous campaign agents, and advertiser trust mechanisms across Display, Video, and Audio advertising.</p>
+        <div class="proj-achievements">
+          <div class="achievement">Defined <strong>experience layer architecture</strong> — multi-turn dialogue, agentic communication patterns, permission/approval workflows, and progressive disclosure strategies for autonomous agent actions</div>
+          <div class="achievement">Designed <strong>trust and explainability framework</strong> — surfacing reasoning, trade-offs, and reversibility controls to advertisers; reduced agent-action abandonment by 30% and improved trust scores by 38% in A/B testing</div>
+          <div class="achievement">Led <strong>VoC feedback strategy</strong> integrating first-party signals into LLM evaluation criteria; reduced hallucination rate by 25% and improved advertiser task completion by 32%</div>
+          <div class="achievement">Established <strong>framework governance</strong> with integration contracts and API commitments; enabled 3 partner teams to build consistent agentic experiences — accelerating their delivery by 40%</div>
+          <div class="achievement">Authored <strong>PR/FAQs, product narratives, and OP1/OP2 plans</strong>; secured VP/SVP executive sponsorship for 2 greenfield product investments</div>
+        </div>
+        <div class="proj-kpis">
+          <div class="kpi"><span class="kpi-num">35%</span><span class="kpi-label">Task Completion ↑</span></div>
+          <div class="kpi"><span class="kpi-num">40%</span><span class="kpi-label">Delivery Speed ↑</span></div>
+          <div class="kpi"><span class="kpi-num">38%</span><span class="kpi-label">Trust Score ↑</span></div>
+          <div class="kpi"><span class="kpi-num">3</span><span class="kpi-label">Teams Enabled</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-card reveal reveal-delay-1">
+      <div class="proj-left">
+        <div>
+          <div class="proj-index">PROJECT 02</div>
+          <h3>AI-Powered Multi-Channel Advertiser Intelligence Platform</h3>
+          <div class="proj-meta">
+            <span>⏱ 12 Months</span>
+            <span>👤 Senior PM-Tech</span>
+            <span>🏢 Display / Video / Audio</span>
+          </div>
+        </div>
+        <div class="proj-tags">
+          <span class="proj-tag">LLM Recommendations</span>
+          <span class="proj-tag">First-Party Signals</span>
+          <span class="proj-tag">API Governance</span>
+          <span class="proj-tag">VoC Strategy</span>
+          <span class="proj-tag">Einstein AI</span>
+        </div>
+      </div>
+      <div class="proj-right">
+        <p>Defined roadmap and led delivery of an LLM-powered campaign optimization and personalized guidance platform integrating first-party advertising signals, REST APIs, and science-backed recommendation models across Display, Video, and Audio advertising channels.</p>
+        <div class="proj-achievements">
+          <div class="achievement">Built <strong>shared experience layer patterns and API governance</strong> enabling 4 partner product teams to deliver consistent agentic experiences; accelerated cross-team delivery by 35%</div>
+          <div class="achievement">Integrated <strong>Einstein Send Time Optimization and Interaction Studio</strong> behavioral tracking; improved campaign ROI by 25% and advertiser engagement by 35%</div>
+          <div class="achievement">Owned <strong>end-to-end VoC strategy</strong> — designed feedback collection across campaign creation, optimization, and reporting; improved NPS by 28% and reduced support tickets by 30%</div>
+          <div class="achievement">Led <strong>technical roadmap and architecture reviews</strong> with 12-engineer team — defined science investment priorities, evaluated LLM capabilities; reduced AI feature time-to-market by 30%</div>
+        </div>
+        <div class="proj-kpis">
+          <div class="kpi"><span class="kpi-num">38%</span><span class="kpi-label">Targeting Accuracy ↑</span></div>
+          <div class="kpi"><span class="kpi-num">25%</span><span class="kpi-label">Campaign ROI ↑</span></div>
+          <div class="kpi"><span class="kpi-num">28%</span><span class="kpi-label">NPS Improvement</span></div>
+          <div class="kpi"><span class="kpi-num">4</span><span class="kpi-label">Teams Enabled</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-card reveal reveal-delay-2">
+      <div class="proj-left">
+        <div>
+          <div class="proj-index">PROJECT 03</div>
+          <h3>Global CRM Modernization & AdTech Integration</h3>
+          <div class="proj-meta">
+            <span>⏱ 28 Months</span>
+            <span>👤 PM-Tech Lead</span>
+            <span>🌍 3 Global Regions</span>
+          </div>
+        </div>
+        <div class="proj-tags">
+          <span class="proj-tag">CRM Architecture</span>
+          <span class="proj-tag">REST APIs</span>
+          <span class="proj-tag">Data Strategy</span>
+          <span class="proj-tag">Agile/SAFe</span>
+          <span class="proj-tag">DevOps</span>
+        </div>
+      </div>
+      <div class="proj-right">
+        <p>Led a 28-month enterprise platform modernization initiative as PM-Tech across a 12-member cross-functional team, serving 3 global regions — establishing the CRM data foundation and integration framework that powers downstream advertising intelligence and personalization.</p>
+        <div class="proj-achievements">
+          <div class="achievement">Defined <strong>product vision and roadmap</strong> for global CRM modernization — drove cross-functional delivery across engineering, design, and data science teams in SAFe Agile framework</div>
+          <div class="achievement">Designed <strong>enterprise integration architecture</strong> with REST APIs and platform events; enabled near-real-time data synchronization across 4 enterprise systems, improving pipeline visibility by 38%</div>
+          <div class="achievement">Established <strong>DevOps governance model</strong> with SFDX and Copado CI/CD pipelines; accelerated release velocity by 30% and reduced production incidents by 35%</div>
+          <div class="achievement">Built <strong>reporting and KPI framework</strong> for Sales, Client Success, and Operations; reduced ad hoc reporting requests by 45% and improved decision-making speed by 40%</div>
+        </div>
+        <div class="proj-kpis">
+          <div class="kpi"><span class="kpi-num">38%</span><span class="kpi-label">Pipeline Visibility ↑</span></div>
+          <div class="kpi"><span class="kpi-num">35%</span><span class="kpi-label">Incidents Reduced</span></div>
+          <div class="kpi"><span class="kpi-num">30%</span><span class="kpi-label">Faster Releases</span></div>
+          <div class="kpi"><span class="kpi-num">12</span><span class="kpi-label">Team Members Led</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="sec-label">Capabilities</div>
+  <h2 class="sec-title">Technical &<br><em>Strategic Expertise</em></h2>
+  <div class="skills-grid">
+    <div class="reveal">
+      <div class="skill-group">
+        <div class="skill-group-label">Product Strategy & Vision</div>
+        <div class="skill-chips">
+          <span class="chip core">Agentic Experience Frameworks</span>
+          <span class="chip core">LLM Product Development</span>
+          <span class="chip core">Roadmap Strategy</span>
+          <span class="chip core">PR/FAQ</span>
+          <span class="chip core">OP1/OP2 Planning</span>
+          <span class="chip">Product Vision</span>
+          <span class="chip">VoC Systems</span>
+          <span class="chip">Go-to-Market</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-label">AI / Agent Platform</div>
+        <div class="skill-chips">
+          <span class="chip core">Conversational AI</span>
+          <span class="chip core">Multi-turn Dialogue</span>
+          <span class="chip core">Agent Orchestration</span>
+          <span class="chip core">LLM Evaluation</span>
+          <span class="chip">Trust & Explainability</span>
+          <span class="chip">Integration Contracts</span>
+          <span class="chip">Progressive Disclosure</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-label">AdTech Domain</div>
+        <div class="skill-chips">
+          <span class="chip core">Display Advertising</span>
+          <span class="chip core">Video Advertising</span>
+          <span class="chip core">Audio Advertising</span>
+          <span class="chip">Campaign Optimization</span>
+          <span class="chip">First-Party Signals</span>
+          <span class="chip">Advertiser Experience</span>
+          <span class="chip">SFMC</span>
+        </div>
+      </div>
+    </div>
+    <div class="reveal reveal-delay-1">
+      <div class="skill-group">
+        <div class="skill-group-label">Core Competencies</div>
+        <div class="competency-bars">
+          <div class="comp-item"><div class="comp-header"><span class="comp-name">Agentic Product Architecture</span><span class="comp-score">97%</span></div><div class="comp-track"><div class="comp-fill" data-w="97"></div></div></div>
+          <div class="comp-item"><div class="comp-header"><span class="comp-name">LLM-Powered Product Development</span><span class="comp-score">94%</span></div><div class="comp-track"><div class="comp-fill" data-w="94"></div></div></div>
+          <div class="comp-item"><div class="comp-header"><span class="comp-name">AdTech Platform Strategy</span><span class="comp-score">95%</span></div><div class="comp-track"><div class="comp-fill" data-w="95"></div></div></div>
+          <div class="comp-item"><div class="comp-header"><span class="comp-name">Cross-functional Leadership</span><span class="comp-score">96%</span></div><div class="comp-track"><div class="comp-fill" data-w="96"></div></div></div>
+          <div class="comp-item"><div class="comp-header"><span class="comp-name">Executive Communication</span><span class="comp-score">93%</span></div><div class="comp-track"><div class="comp-fill" data-w="93"></div></div></div>
+          <div class="comp-item"><div class="comp-header"><span class="comp-name">Technical Architecture Reviews</span><span class="comp-score">90%</span></div><div class="comp-track"><div class="comp-fill" data-w="90"></div></div></div>
+        </div>
+      </div>
+      <div class="skill-group" style="margin-top:24px;">
+        <div class="skill-group-label">Technical & Tools</div>
+        <div class="skill-chips">
+          <span class="chip">REST/SOAP APIs</span>
+          <span class="chip">SQL</span>
+          <span class="chip">Python</span>
+          <span class="chip">JIRA</span>
+          <span class="chip">Amplitude</span>
+          <span class="chip">Agile/SAFe</span>
+          <span class="chip">A/B Testing</span>
+          <span class="chip">GitHub</span>
+          <span class="chip">AWS</span>
+          <span class="chip">Salesforce</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="sec-label">Career Journey</div>
+  <h2 class="sec-title">Where I've<br><em>Built & Led</em></h2>
+  <div class="timeline reveal">
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-header">
+        <div>
+          <div class="tl-title">Principal PM-Tech, Agentic Experience & AI Advertising Framework</div>
+          <div class="tl-company">FINRA, USA</div>
+        </div>
+        <div class="tl-date">May 2025 – Sep 2025</div>
+      </div>
+      <div class="tl-bullets">
+        <div class="tl-bullet">Owned product vision and roadmap for LLM-powered agentic experience framework spanning conversational chat, multi-turn dialogue, and progressive autonomy across Display, Video, and Audio — framework adopted by <strong>3 partner teams, accelerating delivery by 40%</strong></div>
+        <div class="tl-bullet">Designed trust and explainability layer — surfacing reasoning, trade-offs, and reversibility controls — <strong>reducing agent-action abandonment by 30%</strong> and improving advertiser trust scores by 38%</div>
+        <div class="tl-bullet">Authored PR/FAQs, product narratives, and OP1/OP2 plans; secured <strong>VP/SVP executive sponsorship</strong> for 2 greenfield product investments</div>
+        <div class="tl-bullet">Led VoC strategy integrating first-party signals into LLM evaluation criteria — <strong>reduced hallucination rate by 25%</strong> and improved task completion by 32%</div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-header">
+        <div>
+          <div class="tl-title">Senior PM-Tech, AI-Powered Advertising Platform & Experience Layer</div>
+          <div class="tl-company">Cognizant Technology Solutions</div>
+        </div>
+        <div class="tl-date">Jul 2021 – Aug 2024</div>
+      </div>
+      <div class="tl-bullets">
+        <div class="tl-bullet">Defined roadmap for LLM-powered advertiser recommendation engine across Display, Video, and Audio — <strong>increased automation efficiency by 40%</strong>, improved targeting accuracy by 38%</div>
+        <div class="tl-bullet">Built shared experience patterns and API governance enabling 4 partner teams — <strong>accelerated cross-team delivery by 35%</strong>, improved experience consistency by 42%</div>
+        <div class="tl-bullet">Owned end-to-end VoC strategy — <strong>improved NPS by 28%</strong> and reduced advertiser support tickets by 30% through data-driven roadmap decisions</div>
+        <div class="tl-bullet">Led architecture reviews with 12-engineer team, evaluated LLM capabilities — <strong>reduced AI feature time-to-market by 30%</strong></div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-header">
+        <div>
+          <div class="tl-title">PM-Tech, AdTech & Marketing Automation Platform</div>
+          <div class="tl-company">Cognizant Technology Solutions</div>
+        </div>
+        <div class="tl-date">Jul 2020 – Jul 2021</div>
+      </div>
+      <div class="tl-bullets">
+        <div class="tl-bullet">Defined product requirements and delivery roadmap for REST API integrations connecting advertising platforms to CRM and data systems — <strong>improved data consistency by 30%</strong> and reduced campaign errors by 25%</div>
+        <div class="tl-bullet">Led process improvement initiatives for campaign automation workflows — <strong>reduced operational effort by 35%</strong> and improved campaign launch accuracy to 98%</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CERTS & EDUCATION -->
+<section id="certs">
+  <div class="sec-label">Credentials</div>
+  <h2 class="sec-title">Education &<br><em>Certifications</em></h2>
+  <div class="certs-edu-layout">
+    <div class="reveal">
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--amber);margin-bottom:20px;font-weight:400;">Certifications</h3>
+      <div class="cert-grid">
+        <div class="cert-row"><div class="cert-icon">☁️</div><div class="cert-info"><h4>AWS Certified Cloud Practitioner</h4><p>Amazon Web Services</p></div><span class="cert-badge">Active</span></div>
+        <div class="cert-row"><div class="cert-icon">🤖</div><div class="cert-info"><h4>Salesforce Certified AI Associate</h4><p>Salesforce</p></div><span class="cert-badge">Active</span></div>
+        <div class="cert-row"><div class="cert-icon">📋</div><div class="cert-info"><h4>Product Management – SAFe Agile</h4><p>Scaled Agile Framework</p></div><span class="cert-badge">Active</span></div>
+        <div class="cert-row"><div class="cert-icon">⚙️</div><div class="cert-info"><h4>Salesforce Administrator ADM 201</h4><p>Salesforce</p></div><span class="cert-badge">Active</span></div>
+        <div class="cert-row"><div class="cert-icon">🔄</div><div class="cert-info"><h4>GitLab CI/CD Certified</h4><p>GitLab</p></div><span class="cert-badge">Active</span></div>
+        <div class="cert-row"><div class="cert-icon">⚡</div><div class="cert-info"><h4>Salesforce JavaScript Developer I</h4><p>Salesforce</p></div><span class="cert-badge">Active</span></div>
+      </div>
+    </div>
+    <div class="reveal reveal-delay-1">
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--amber);margin-bottom:20px;font-weight:400;">Education</h3>
+      <div class="edu-entries">
+        <div class="edu-entry">
+          <div class="edu-degree">M.S. Information Technology</div>
+          <div class="edu-school">University of Denver</div>
+          <div class="edu-dates">AUG 2024 — MAY 2026</div>
+          <div class="edu-desc">Advanced study in AI systems, enterprise architecture, data-driven product development, and emerging technologies.</div>
+        </div>
+        <div class="edu-entry">
+          <div class="edu-degree">B.E. Computer Science Engineering</div>
+          <div class="edu-school">Anna University</div>
+          <div class="edu-dates">AUG 2017 — MAY 2021</div>
+          <div class="edu-desc">Foundation in software engineering, algorithms, distributed systems, and data structures.</div>
+        </div>
+        <div class="edu-entry" style="border-left-color:rgba(212,137,26,0.4);">
+          <div class="edu-degree">Continuing Education in AI/ML</div>
+          <div class="edu-school">LLMs · Agentic Systems · AdTech</div>
+          <div class="edu-dates">2022 — PRESENT</div>
+          <div class="edu-desc">Active learner in large language model applications, agentic product patterns, and advertising technology innovation.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="contact-bar" id="contact">
+  <div>
+    <h2>Let's Build the Future of<br>Advertising Together</h2>
+    <p>Principal PM-Tech · Agentic AI · AdTech · Seattle, WA</p>
+  </div>
+  <div class="contact-actions">
+    <a href="mailto:kiruthikavenkat2704@gmail.com" class="btn-ink">Email Me</a>
+    
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-mark">Kiruthika Venkatesan</div>
+  <p>Principal PM-Tech · Agentic AI · AdTech · Seattle, WA</p>
+  <p>© 2025 · Portfolio</p>
+</footer>
+
+<script>
+// Custom cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cursor.style.left=mx+'px'; cursor.style.top=my+'px'; });
+function animRing(){ rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(animRing); }
+animRing();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{ cursor.style.width='18px'; cursor.style.height='18px'; ring.style.width='48px'; ring.style.height='48px'; ring.style.borderColor='var(--amber)'; });
+  el.addEventListener('mouseleave',()=>{ cursor.style.width='10px'; cursor.style.height='10px'; ring.style.width='32px'; ring.style.height='32px'; ring.style.borderColor='rgba(212,137,26,0.5)'; });
+});
+
+// Scroll reveal
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting) setTimeout(()=>e.target.classList.add('vis'), i*60);
+  });
+},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// Competency bars
+const barObs = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.querySelectorAll('.comp-fill').forEach(b=>{
+        b.style.width = b.dataset.w + '%';
+      });
+    }
+  });
+},{threshold:0.3});
+document.querySelectorAll('.competency-bars').forEach(s=>barObs.observe(s));
+
+// Active nav highlighting
+const sections = document.querySelectorAll('section[id], div[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  sections.forEach(s=>{ if(window.scrollY>=s.offsetTop-120) cur=s.id; });
+  navLinks.forEach(a=>{ a.style.color = a.getAttribute('href')==='#'+cur ? 'var(--amber)' : ''; });
+});
+</script>
+</body>
+</html>
